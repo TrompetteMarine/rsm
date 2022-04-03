@@ -13,10 +13,10 @@ class item(object):
         self.title = title 
         self.body = body
 
-url = 'https://www.sec.gov/Archives/edgar/data/760326/0001193125-13-226195-index.htm'
+url = 'http://www.sec.gov/Archives/edgar/data/917523/0001193125-13-226084-index.htm'
 
 def RSM(finalresults):
-    #get the domain part of the url
+ #get the domain part of the url
  domain = urlparse(url).netloc
  #array of item objects 
  finalResuls = []
