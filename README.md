@@ -11,3 +11,4 @@ Access VSC setting
 
 Open a new project in Visual Source Code
 
+Lib: Selenium, pandas, BeautifulSoup

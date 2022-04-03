@@ -13,9 +13,7 @@ class item(object):
         self.title = title 
         self.body = body
 
-url = 'http://www.sec.gov/Archives/edgar/data/917523/0001193125-13-226084-index.htm'
-
-def RSM(finalresults):
+def RSM(url):
  #get the domain part of the url
  domain = urlparse(url).netloc
  #array of item objects 
@@ -47,31 +45,56 @@ def RSM(finalresults):
         #1) find table (title)
         table = docSoup.find_all('table')
         
-        for t in table:
-             #looking for Item... = title
-            if (t.text.find('Item') != -1): 
-                #looking for all next <p> that contain the body of the item (loop until the next <table)
-                p=""
-                #emulate do loop ... :(
-                tag = t
-                while True:
-                    np = tag.findNext('p')
-                    if(np.text != '\xa0'):
-                        p += "\n" + np.text
-                        tag=tag.findNext('p')
-                    else:
-                        break
-                #create final object and store it in an array
-                finalResuls.append(item(t.text,p))
+        parserType = 0
+
+        isOldDocument = docSoup.find('p')
+        if isOldDocument == None:
+            parserType =1
+
+        if parserType == 0:  #parse type = <p>
+            for t in table:
+                #looking for Item... = title
+                if (t.text.find('Item') != -1): 
+                    #looking for all next <p> that contain the body of the item (loop until the next <table)
+                    p=""
+                    #emulate do loop ... :(
+                    tag = t
+                    
+                    while True:
+                        np = tag.findNext('p')
+                        if(np.text != '\xa0'):
+                            p += "\n" + np.text
+                            tag=tag.findNext('p')
+                        else:
+                            break
+                    #create final object and store it in an array
+                    finalResuls.append(item(t.text,p))
+            
+            
+        else: #parse type =<div>
+            for t in table:
+                #looking for Item... = title
+                if (t.text.find('Item') != -1): 
+                    #looking for all next <p> that contain the body of the item (loop until the next <table)
+                    p=""
+                    #emulate do loop ... :(
+                    tag = t
+                    
+                    while True:
+                        np = tag.findNext('div')
+                        if(np.text != '\xa0'):
+                            p += "\n" + np.text
+                            tag=tag.findNext('div')
+                        else:
+                            break
+                    #create final object and store it in an array
+                    finalResuls.append(item(p,t.text))
 
  #check if its ok...
- for obj in finalResuls:
-    print( obj.title, obj.body, sep =' ' )
+ if finalResuls != None:
+    for obj in finalResuls:
+        print( obj.title, obj.body, sep =' ' )
 
  browser.close()
 
- return(finalResuls) 
-
-RSM(url)
-
-
+ return(finalResuls)
