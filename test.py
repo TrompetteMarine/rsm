@@ -8,28 +8,29 @@ import requests as req
 
 from urllib.parse import urlparse
 
-url = 'https://www.sec.gov/Archives/edgar/data/760326/0001193125-13-226195-index.htm'
-#get the domain part of the url
-domain = urlparse(url).netloc
-#array of item objects 
-finalResuls = []
-
 class item(object):
     def __init__(self, title, body): 
         self.title = title 
         self.body = body
 
-#init webdriver
-browser = webdriver.Chrome()
-#browse to the url
-browser.get(url)
-#get hml content
-html = browser.page_source
+url = 'https://www.sec.gov/Archives/edgar/data/760326/0001193125-13-226195-index.htm'
 
-#extract HTML Link 
-soup = BeautifulSoup(html, features="html.parser")
-#research for all the <p> tag
-for p in soup.find_all('a'):
+def RSM(finalresults):
+    #get the domain part of the url
+ domain = urlparse(url).netloc
+ #array of item objects 
+ finalResuls = []
+ #init webdriver
+ browser = webdriver.Chrome()
+ #browse to the url
+ browser.get(url)
+ #get hml content
+ html = browser.page_source
+
+ #extract HTML Link 
+ soup = BeautifulSoup(html, features="html.parser")
+ #research for all the <p> tag
+ for p in soup.find_all('a'):
    
    if (p.text.find('8k.htm') != -1):
         
@@ -63,8 +64,14 @@ for p in soup.find_all('a'):
                 #create final object and store it in an array
                 finalResuls.append(item(t.text,p))
 
-#check if its ok...
-for obj in finalResuls:
+ #check if its ok...
+ for obj in finalResuls:
     print( obj.title, obj.body, sep =' ' )
 
-browser.close()
+ browser.close()
+
+ return(finalResuls) 
+
+RSM(url)
+
+
