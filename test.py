@@ -30,7 +30,7 @@ def RSM(url):
  #research for all the <p> tag
  for p in soup.find_all('a'):
    
-   if (p.text.find('8k.htm') != -1):
+   if (p.text.find('8vk.htm')!= -1 or p.text.find('8k.htm')  != -1):
         
         #extract local url from html tag.
         documentUrl = p.get("href")
@@ -62,9 +62,16 @@ def RSM(url):
                     
                     while True:
                         np = tag.findNext('p')
+                        if np == None :
+                            np = tag.findNext('div')
+                        if np == None :
+                            print("Parsing Error")
+                            break
                         if(np.text != '\xa0'):
                             p += "\n" + np.text
                             tag=tag.findNext('p')
+                            if np == None :
+                                np = tag.findNext('div')
                         else:
                             break
                     #create final object and store it in an array

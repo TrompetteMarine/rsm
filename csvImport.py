@@ -9,7 +9,7 @@ def cls():
     os.system('cls' if os.name=='nt' else 'clear')
 
 #for testing purpose import only the first 10 lines
-offset =100
+offset =89000
 startLine = offset + 0
 endLine = offset + 5
 big_data=[]
@@ -48,6 +48,7 @@ successRatio = 100-(nothing*(100/count))
 
 print("\n Success :" + str(int(successRatio)) +"%")
 print("\n---------------------------------------------------------")
+
 #save big_data to file
 #print(big_data)
     
