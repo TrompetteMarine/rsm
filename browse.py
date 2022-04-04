@@ -1,23 +1,20 @@
 from selenium import webdriver
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
 from bs4 import BeautifulSoup
 import requests as req
-
 from urllib.parse import urlparse
+from os.path import splitext
+from classes.item import item
+from parsers.type1 import parseType1
+from parsers.type2 import parseType2
+from classes.results import results
 
-class item(object):
-    def __init__(self, title, body): 
-        self.title = title 
-        self.body = body
-
-def RSM(url):
+def browse(url):
+ finalResults = results([],"")
+ 
  #get the domain part of the url
  domain = urlparse(url).netloc
- #array of item objects 
- finalResuls = []
  #init webdriver
  browser = webdriver.Chrome()
  #browse to the url
@@ -30,11 +27,16 @@ def RSM(url):
  #research for all the <p> tag
  for p in soup.find_all('a'):
    
-   if (p.text.find('8vk.htm')!= -1 or p.text.find('8k.htm')  != -1):
-        
+   #TODO: change the way we retrieve the 8k filename.
+   if (p.text.find('8vk.htm')!= -1 or p.text.find('8k.htm')  != -1 or p.text.find('8k')  != -1):
+
+        ext = splitext(p.text)[1]
+        if ext == ".txt":
+            print("page is a text file, cannot extract any data")
+            break
+
         #extract local url from html tag.
         documentUrl = p.get("href")
-        
         #construct url & open the child document
         browser.get("https://" + domain + documentUrl )
         #get html from child document
@@ -44,64 +46,25 @@ def RSM(url):
          
         #1) find table (title)
         table = docSoup.find_all('table')
-        
-        parserType = 0
+        parserType = 1
 
         isOldDocument = docSoup.find('p')
         if isOldDocument == None:
-            parserType =1
+            parserType =2
 
-        if parserType == 0:  #parse type = <p>
-            for t in table:
-                #looking for Item... = title
-                if (t.text.find('Item') != -1): 
-                    #looking for all next <p> that contain the body of the item (loop until the next <table)
-                    p=""
-                    #emulate do loop ... :(
-                    tag = t
-                    
-                    while True:
-                        np = tag.findNext('p')
-                        if np == None :
-                            np = tag.findNext('div')
-                        if np == None :
-                            print("Parsing Error")
-                            break
-                        if(np.text != '\xa0'):
-                            p += "\n" + np.text
-                            tag=tag.findNext('p')
-                            if np == None :
-                                np = tag.findNext('div')
-                        else:
-                            break
-                    #create final object and store it in an array
-                    finalResuls.append(item(t.text,p))
-            
-            
-        else: #parse type =<div>
-            for t in table:
-                #looking for Item... = title
-                if (t.text.find('Item') != -1): 
-                    #looking for all next <p> that contain the body of the item (loop until the next <table)
-                    p=""
-                    #emulate do loop ... :(
-                    tag = t
-                    
-                    while True:
-                        np = tag.findNext('div')
-                        if(np.text != '\xa0'):
-                            p += "\n" + np.text
-                            tag=tag.findNext('div')
-                        else:
-                            break
-                    #create final object and store it in an array
-                    finalResuls.append(item(p,t.text))
+        if parserType == 1:  #parse type = <p>
+            finalResults = parseType1(table)
+        elif parserType == 2:
+            finalResults = parseType2(table)
+
+        #we found 1 file, not necesary to continue the for loop
+        break
 
  #check if its ok...
- if finalResuls != None:
-    for obj in finalResuls:
+ if finalResults != None:
+    for obj in finalResults.resultList:
         print( obj.title, obj.body, sep =' ' )
 
  browser.close()
 
- return(finalResuls)
+ return(finalResults)

@@ -1,5 +1,6 @@
 #here: importation of csv contents.
 import pandas as pd
+
 def importCSV(csvFile, start, end, offset):
     offset =offset
     startLine = offset + start
@@ -10,5 +11,6 @@ def importCSV(csvFile, start, end, offset):
 
     #for performances purpose
     urlList =  reviews_df.values.tolist() 
+    
     return urlList
     

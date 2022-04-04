@@ -1,7 +1,7 @@
 from csvImport import importCSV
-from browse import RSM
+from browse import browse
 import os
-#import csv as csvReader
+from classes.results import results
 
 def cls():
     os.system('cls' if os.name=='nt' else 'clear')
@@ -13,13 +13,15 @@ def cls():
 #  end: last entry to browse
 #  offset: first page browsed is retrieved at entry number (offset + start)
 big_data=[]
-offset = 99900
-start = 0
-end = 5
+offset = 0
+start = 5
+end = 14
+
+if end<start:
+    print("Error end < start")
 
 # import csv data
 listToImport = importCSV("to_use_text.csv",  start, end, offset)
-
 count = 0
 nothing = 0
 
@@ -28,29 +30,32 @@ cls()
 for url in listToImport:
     
     #extract data from url 
-    result = RSM(url[0])
+    print("\n##############################################################")    
+    print("Extract Report for: " + url[0])
+    print("\n")
+
+    results = browse(url[0])
 
     #append data
-    big_data.append(result)
+    big_data.append(results)
 
     #log
-    print("Extract of: " + url[0]) 
-    print("\n")
+    print("\n--------------------------------------------------------------")    
+    print("Extracted with parser of type: " + results.info) 
     count+=1
     print("Extract num: "+ str(count) + "/" + str(end-start))
-    if len(result) == 0:
-        print("\n")
+    print("\n")
+    if len(results.resultList) == 0:
         print("Nothing Extracted, please check format or/and content of the page")
         nothing+=1
         print("\n---------------------------------------------------------")
         
     print("TOTAL PAGE(s) EXTRACTED :" + str(count - nothing))
-    print("\n TOTAL PAGE(s) WITHOUT RESULT " + str(nothing))
+    print("TOTAL PAGE(s) WITHOUT RESULT " + str(nothing))
 
     successRatio = 100-(nothing*(100/count))
 
-    print("\n Success :" + str(int(successRatio)) +"%")
+    print("\nSUCCES RATIO:" + str(int(successRatio)) +"%")
     print("\n---------------------------------------------------------")
-
     #save big_data to file
     #print(big_data)
