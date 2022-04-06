@@ -1,0 +1,60 @@
+
+---------------------------------------------------------
+ From #459242to: 459282
+parser 1 ratio : 65.0
+parser 2 ratio : 17.5
+parser 3 ratio : 0.0
+---------------------------------------------------------
+ From #515523to: 515563
+parser 1 ratio : 55.0
+parser 2 ratio : 27.5
+parser 3 ratio : 2.5
+parser error : 6
+---------------------------------------------------------
+ From #467532to: 467534
+parser 1 ratio : 50.0
+parser 2 ratio : 0.0
+parser 3 ratio : 0.0
+parser error : 1
+---------------------------------------------------------
+ From #576115to: 576117
+parser 1 ratio : 50.0
+parser 2 ratio : 50.0
+parser 3 ratio : 0.0
+parser error : 0
+---------------------------------------------------------
+ From #501241to: 501243
+parser 1 ratio : 100.0
+parser 2 ratio : 0.0
+parser 3 ratio : 0.0
+parser error : 0
+---------------------------------------------------------
+ From #424524to: 424526
+parser 1 ratio : 0.0
+parser 2 ratio : 50.0
+parser 3 ratio : 0.0
+parser error : 1
+---------------------------------------------------------
+ From #462375to: 462377
+parser 1 ratio : 50.0
+parser 2 ratio : 0.0
+parser 3 ratio : 0.0
+parser error : 1
+---------------------------------------------------------
+ From #533873to: 533875
+parser 1 ratio : 0.0
+parser 2 ratio : 50.0
+parser 3 ratio : 0.0
+parser error : 1
+---------------------------------------------------------
+ From #570368to: 570370
+parser 1 ratio : 100.0
+parser 2 ratio : 0.0
+parser 3 ratio : 0.0
+parser error : 0
+---------------------------------------------------------
+ From #400793to: 400795
+parser 1 ratio : 100.0
+parser 2 ratio : 0.0
+parser 3 ratio : 0.0
+parser error : 0

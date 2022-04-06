@@ -25,6 +25,7 @@ def process(count, start, end, offset):
     numType1 = 0
     numType2 = 0
     numType3 = 0
+    parserError = 0
 
     for url in listToImport:
         
@@ -35,13 +36,17 @@ def process(count, start, end, offset):
 
         results = browse(url[0])
         
-        if results.parserType == 1:
-            numType1 +=1
-        if results.parserType == 2:
-            numType2 +=1  
-        if results.parserType == 3:
-            numType3 +=1
-    
+        if hasattr(results, 'parserType'):
+            if results.parserType == 1:
+                numType1 +=1
+            if results.parserType == 2:
+                numType2 +=1  
+            if results.parserType == 3:
+                numType3 +=1
+        else:
+            parserError +=1 
+
+
         #append data
         big_data.append(results)
 
@@ -68,10 +73,11 @@ def process(count, start, end, offset):
         print ("\nparser 2 ratio : " + str(numType2*(100/count)))
         print ("\nparser 3 ratio : " + str(numType3*(100/count)))
 
-        stats(0,0,0)
+        stats(0,0,0,0)
         stats.type1 = numType1*(100/count)
         stats.type2 = numType2*(100/count)
         stats.type3 = numType3*(100/count)
+        stats.error = parserError
         
         #Clean text function
 
@@ -89,17 +95,18 @@ def process(count, start, end, offset):
     #  end: last entry to browse
     #  offset: first page browsed is retrieved at entry number (offset + start)
 count = 0
-for x in range(1) :
+for x in range(2) :
     offset = int(rnd.random() * 600000)
     start = 0
-    end = 4
+    end = 40
     stats = process(count, start, end, offset)
     count = 0
 
-#save stats        
-f = open('stat.txt', 'a') 
-f.write('\n---------------------------------------------------------')
-f.write('\n From #' + str(start+offset) + 'to: ' +str(end + offset))
-f.write("\nparser 1 ratio : " + str(stats.type1))
-f.write("\nparser 2 ratio : " + str(stats.type2))
-f.write("\nparser 3 ratio : " + str(stats.type3))
+    #save stats        
+    f = open('stat.txt', 'a') 
+    f.write('\n---------------------------------------------------------')
+    f.write('\n From #' + str(start+offset) + 'to: ' +str(end + offset))
+    f.write("\nparser 1 ratio : " + str(stats.type1))
+    f.write("\nparser 2 ratio : " + str(stats.type2))
+    f.write("\nparser 3 ratio : " + str(stats.type3))
+    f.write("\nparser error : " + str(stats.error))
