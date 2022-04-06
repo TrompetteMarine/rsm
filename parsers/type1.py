@@ -4,13 +4,13 @@ from classes.results import results
 
 def parseType1(table):
 
- finalResults = results([],"")
+ finalResults = results([],"",-1)
 
  for t in table:
     #looking for Item... = title
     if (t.text.find('Item') != -1): 
     #looking for all next <p> that contain the body of the item (loop until the next <table)
-        p=""
+        p= ""
         #emulate do loop ... :(
         tag = t
                     
@@ -32,5 +32,6 @@ def parseType1(table):
         finalResults.resultList.append(item(t.text,p))
 
  finalResults.info ="type1"
+ finalResults.parserType = 1
 
  return finalResults

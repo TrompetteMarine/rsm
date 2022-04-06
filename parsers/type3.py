@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
 from classes.item import item
 
-def parseType3(table):
+#parser type = texte
+def parseType3(table): 
 
- finalResuls = []
+ finalResults = []
 
- return finalResult
+ finalResults.parserType = 3
+ return finalResults

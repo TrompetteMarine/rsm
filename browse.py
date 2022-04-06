@@ -11,7 +11,7 @@ from parsers.type2 import parseType2
 from classes.results import results
 
 def browse(url):
- finalResults = results([],"")
+ finalResults = results([],"", -1)
  
  #get the domain part of the url
  domain = urlparse(url).netloc
@@ -33,6 +33,8 @@ def browse(url):
         ext = splitext(p.text)[1]
         if ext == ".txt":
             print("page is a text file, cannot extract any data")
+            finalResults.info="text"
+            finalResults.parserType = 3
             break
 
         #extract local url from html tag.
@@ -49,6 +51,7 @@ def browse(url):
         parserType = 1
 
         isOldDocument = docSoup.find('p')
+
         if isOldDocument == None:
             parserType =2
 
@@ -59,6 +62,7 @@ def browse(url):
 
         #we found 1 file, not necesary to continue the for loop
         break
+  
 
  #check if its ok...
  if finalResults != None:

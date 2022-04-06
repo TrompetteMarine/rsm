@@ -4,7 +4,7 @@ from classes.results import results
 
 def parseType2(table):
 
- finalResults = results([],"")
+ finalResults = results([],"",-1)
 
  for t in table:
     #looking for Item... = title
@@ -25,4 +25,5 @@ def parseType2(table):
         finalResults.resultList.append(item(t.text,p))
 
  finalResults.info = "type2"
+ finalResults.parserType = 2
  return finalResults
