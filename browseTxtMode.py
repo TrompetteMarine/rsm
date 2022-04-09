@@ -7,8 +7,7 @@ import requests as req
 from urllib.parse import urlparse
 from os.path import splitext
 from classes.item import item
-from parsers.type1 import parseType1
-from parsers.type2 import parseType2
+from parsers.type3 import parseType3
 from classes.results import results
 
 #Option for headless chrome
@@ -24,7 +23,7 @@ if debugMode == True :
 else :
     options = None
 
-def browse(url):
+def browseTxtMode(url):
  finalResults = results([],"", -1)
  
  #get the domain part of the url
@@ -44,12 +43,6 @@ def browse(url):
    #TODO: change the way we retrieve the 8k filename.
    if (p.text.find('8vk.htm')!= -1 or p.text.find('8k.htm')  != -1 or p.text.find('8k')  != -1):
 
-        ext = splitext(p.text)[1]
-        if ext == ".txt":
-            print("page is a text file, cannot extract any data")
-            finalResults.info="text"
-            finalResults.parserType = 3
-            break
 
         #extract local url from html tag.
         documentUrl = p.get("href")
@@ -57,22 +50,8 @@ def browse(url):
         browser.get("https://" + domain + documentUrl )
         #get html from child document
         documentHtml = browser.page_source
-        #extract for BeautifulSoup
-        docSoup = BeautifulSoup(documentHtml, features="html.parser")
-         
-        #1) find table (title)
-        table = docSoup.find_all('table')
-        parserType = 1
 
-        isOldDocument = docSoup.find('p')
-
-        if isOldDocument == None:
-            parserType =2
-
-        if parserType == 1:  #parse type = <p>
-            finalResults = parseType1(table)
-        elif parserType == 2:
-            finalResults = parseType2(table)
+        finalResults = parseType3(documentHtml)
 
         #we found 1 file, not necesary to continue the for loop
         break

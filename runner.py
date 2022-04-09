@@ -1,9 +1,11 @@
 from csvImport import importCSV
 from browse import browse
+from browseTxtMode import browseTxtMode
 import os
 from classes.results import results
 from classes.stats import stats
 import random as rnd
+from Language_Similiarity_1 import Lemmitization_Func 
 
 big_data=[]
 
@@ -34,7 +36,7 @@ def process(count, start, end, offset):
         print("Extract Report for: " + url[0])
         print("\n")
 
-        results = browse(url[0])
+        results = browseTxtMode(url[0])
         
         if hasattr(results, 'parserType'):
             if results.parserType == 1:
@@ -46,9 +48,10 @@ def process(count, start, end, offset):
         else:
             parserError +=1 
 
+        #Lemmitization_Func(results.resultList[0].item.rebody)
 
         #append data
-        big_data.append(results)
+        #big_data.append(results)
 
         #log
         print("\n--------------------------------------------------------------")    
@@ -88,17 +91,21 @@ def process(count, start, end, offset):
         #print(big_data)
 
     return stats
-  # importCSV
-    # params:
-    #  dataSource, csv file
-    #  start: first entry to browse 
-    #  end: last entry to browse
-    #  offset: first page browsed is retrieved at entry number (offset + start)
+  
+  
+# importCSV
+# 
+# params:
+#  dataSource, csv file
+#  start: first entry to browse 
+#  end: last entry to browse
+#  offset: first page browsed is retrieved at entry number (offset + start)
 count = 0
-for x in range(5) :
-    offset = int(rnd.random() * 600000)
+for x in range(1) :
+
+    offset = 0 # int(rnd.random() * 600000)
     start = 0
-    end = 100
+    end = 5
     stats = process(count, start, end, offset)
     count = 0
 

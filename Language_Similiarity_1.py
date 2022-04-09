@@ -7,6 +7,7 @@ import re
 import os
 import tensorflow_hub as hub
 import spacy
+
 nlp = spacy.load('en_core_web_lg')
 #Lemmitization
 import nltk
@@ -21,7 +22,7 @@ punctuations="?:!.,;"
 #normalized_levenshtein = NormalizedLevenshtein()
 
 #Get dataset
-Dataset = pd.read_csv("Text_Data/BuybackOutput.csv")
+Dataset = pd.read_csv("LoughranMcDonald_MasterDictionary_2018.csv")
 Quotes_list = []
 Full_Texts_list = []
 Similarity_list = []
