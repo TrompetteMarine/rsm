@@ -95,10 +95,10 @@ def process(count, start, end, offset):
     #  end: last entry to browse
     #  offset: first page browsed is retrieved at entry number (offset + start)
 count = 0
-for x in range(2) :
+for x in range(5) :
     offset = int(rnd.random() * 600000)
     start = 0
-    end = 40
+    end = 100
     stats = process(count, start, end, offset)
     count = 0
 
