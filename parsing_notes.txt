@@ -1,4 +1,5 @@
 Some file as http://www.sec.gov/Archives/edgar/data/719220/0001193125-13-231562-index.htm
 as not parsed because of the file name (test is wrong)
--> update the file retriving method using the document type not the presence of 8k in the file name
+-> update the file retriving method using the document type not the presence of 8k in the file name.
+->  --> done parsing all as a text file.
 

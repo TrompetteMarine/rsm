@@ -46,9 +46,6 @@ pysent_text_scores = []
 pysent_quote_scores = []
 Academic_ID_list = [] """
 
-
-
-
 #convert to list for performances purpose
 wordList =  sentence.values.tolist()
 

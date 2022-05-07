@@ -51,7 +51,13 @@ def process(count, start, end, offset):
         else:
             parserError +=1 
 
-        item =  results.resultList[0]
+        
+        if( (len(results.resultList)>0) and (len(results.error)==0)) :
+            item =  results.resultList[0]
+        elif(len(results.error)>0):
+            print(results.error)
+
+
        
         tokenText= tokenize(item.body)
         Score = analyze(tokenText)
@@ -88,7 +94,7 @@ def process(count, start, end, offset):
         stats.type2 = numType2*(100/count)
         stats.type3 = numType3*(100/count)
         #stats.positive = 
-        #stats.error = parserError
+        stats.error = results.error
 
         f = open('stat.txt', 'a') 
         f.write('\n---------------------------------------------------------')
@@ -119,7 +125,7 @@ def process(count, start, end, offset):
 count = 0
 for x in range(1) :
 
-    offset = 0 # int(rnd.random() * 600000)
+    offset = 100 # int(rnd.random() * 600000)
     start = 0
     end = 5
     stats = process(count, start, end, offset)

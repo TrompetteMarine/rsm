@@ -41,7 +41,7 @@ def browseTxtMode(url):
  for p in soup.find_all('a'):
    
    #TODO: change the way we retrieve the 8k filename.
-   if (p.text.find('8vk.htm')!= -1 or p.text.find('8k.htm')  != -1 or p.text.find('8k')  != -1):
+    if(p.text.find('8vk.htm')!= -1 or p.text.find('8k.htm')  != -1 or p.text.find('8k')  != -1):
 
 
         #extract local url from html tag.
@@ -60,7 +60,8 @@ def browseTxtMode(url):
         finalResults.url = _8KUrl
         #we found 1 file, not necesary to continue the for loop
         break
-  
+    else:
+        finalResults.error = "No 8k file found"
 
  #check if its ok...
  """if finalResults != None:
