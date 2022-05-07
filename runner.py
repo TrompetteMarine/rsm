@@ -5,7 +5,10 @@ import os
 from classes.results import results
 from classes.stats import stats
 import random as rnd
-from Language_Similiarity_1 import Lemmitization_Func 
+from analyze import analyze 
+from analyze import tokenize
+from classes.score import score as Score
+import csv
 
 big_data=[]
 
@@ -48,10 +51,10 @@ def process(count, start, end, offset):
         else:
             parserError +=1 
 
-        #Lemmitization_Func(results.resultList[0].item.rebody)
-
-        #append data
-        #big_data.append(results)
+        item =  results.resultList[0]
+       
+        tokenText= tokenize(item.body)
+        Score = analyze(tokenText)
 
         #log
         print("\n--------------------------------------------------------------")    
@@ -74,21 +77,34 @@ def process(count, start, end, offset):
 
         print ("parser 1 ratio : " + str(numType1*(100/count)))
         print ("\nparser 2 ratio : " + str(numType2*(100/count)))
-        print ("\nparser 3 ratio : " + str(numType3*(100/count)))
+        print ("\nResult for file : " +  url[0])
+
+        print ("\nPositive word(s) : " +  str(Score.positive))
+        print ("\nNegative words(s) : " +  str(Score.negative))
+        
 
         stats(0,0,0,0)
         stats.type1 = numType1*(100/count)
         stats.type2 = numType2*(100/count)
         stats.type3 = numType3*(100/count)
-        stats.error = parserError
-        
-        #Clean text function
+        #stats.positive = 
+        #stats.error = parserError
 
-        #Compute # of positive and negative word
+        f = open('stat.txt', 'a') 
+        f.write('\n---------------------------------------------------------')
+        f.write("\nFile : " +  url[0])
+        f.write("\n8K File : " +  results.url)
+        f.write("\nPositive word(s) : " + str(Score.positive))
+        f.write("\nNegative word(s) : " + str(Score.negative))
+        f.close()
+    
+        #save value in csv file
+        #header = ['file', '8Kfile', 'score +', 'score -', 'word +', 'word -']
+        data = [url[0], results.url, str(Score.positive), str(Score.negative),"",""]
 
-        #Save big_data to CSV file
-        
-        #print(big_data)
+        with open('statResult.csv', 'a', newline='') as csvfile:
+            statWriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            statWriter.writerow(data)
 
     return stats
   
@@ -117,3 +133,4 @@ for x in range(1) :
     f.write("\nparser 2 ratio : " + str(stats.type2))
     f.write("\nparser 3 ratio : " + str(stats.type3))
     f.write("\nparser error : " + str(stats.error))
+    f.close()

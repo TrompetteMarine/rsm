@@ -15,7 +15,9 @@ from classes.results import results
 def parseType3(htmlDocument): 
  
     
-    finalResults = results([],"",-1)
+    useless_words = ["the", "to", "'s" , "of", "by", "that", "this"]
+
+    finalResults = results([],"",-1,"","")
     #strip html tag
     p = re.compile(r'<.*?>')
     strippedDoc =  p.sub('', htmlDocument)
@@ -26,15 +28,18 @@ def parseType3(htmlDocument):
 
     strippedDoc =  strippedDoc.replace('&amp',"")
 
+    for word in useless_words:
+        strippedDoc = strippedDoc.replace(word, "")
+
     allow = string.ascii_letters  + " " + '-' # + string.digits 
 
     finalStrippedDoc = re.sub('[^%s]' % allow, '', strippedDoc)
 
     #finalStrippedDoc =  strippedDoc.replace('\\n',"")
 
-    print(finalStrippedDoc)
+    #print(finalStrippedDoc)
 
-    finalResults = results([],"",-1)
+    finalResults = results([],"",-1,"","")
 
     finalResults.resultList.append(item("doc",finalStrippedDoc))
     

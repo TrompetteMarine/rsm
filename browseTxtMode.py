@@ -24,7 +24,7 @@ else :
     options = None
 
 def browseTxtMode(url):
- finalResults = results([],"", -1)
+ finalResults = results([],"", -1,"","")
  
  #get the domain part of the url
  domain = urlparse(url).netloc
@@ -47,20 +47,25 @@ def browseTxtMode(url):
         #extract local url from html tag.
         documentUrl = p.get("href")
         #construct url & open the child document
-        browser.get("https://" + domain + documentUrl )
+    
+        _8KUrl = "https://" + domain + documentUrl
+
+        browser.get(_8KUrl)
         #get html from child document
         documentHtml = browser.page_source
 
         finalResults = parseType3(documentHtml)
 
+
+        finalResults.url = _8KUrl
         #we found 1 file, not necesary to continue the for loop
         break
   
 
  #check if its ok...
- if finalResults != None:
+ """if finalResults != None:
     for obj in finalResults.resultList:
-        print( obj.title, obj.body, sep =' ' )
+        print( obj.title, obj.body, sep =' ' )"""
 
  browser.close()
 

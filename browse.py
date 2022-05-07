@@ -79,10 +79,10 @@ def browse(url):
   
 
  #check if its ok...
- if finalResults != None:
+ """if finalResults != None:
     for obj in finalResults.resultList:
         print( obj.title, obj.body, sep =' ' )
-
+ """
  browser.close()
 
  return(finalResults)
