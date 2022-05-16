@@ -3,6 +3,7 @@ import unittest
 import pandas as pd
 from classes.score import score as Score
 from analyze import analyze
+from analyze import tokenize
 
 class TestAnalyse(unittest.TestCase):
 
@@ -13,6 +14,8 @@ class TestAnalyse(unittest.TestCase):
 
         #convert to list for performances purpose
         wordList =  sentence.values.tolist()
+
+        #tokenWordList  =  tokenize("ABERRANT ABHORRENCES ABANDONING")
 
         score = analyze(wordList)
 

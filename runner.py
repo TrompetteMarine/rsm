@@ -8,6 +8,7 @@ import random as rnd
 from analyze import analyze 
 from analyze import tokenize
 from classes.score import score as Score
+from datetime import datetime
 import csv
 
 big_data=[]
@@ -31,6 +32,27 @@ def process(count, start, end, offset):
     numType2 = 0
     numType3 = 0
     parserError = 0
+
+
+    headerStat = ["hash","URL","8K","+ Words","- Words"]
+    headerWord = ["hash", "+ Words","- Words"]
+
+    now = datetime.now()
+    dt_string = now.strftime("%d-%m-%YT%H_%M_%S")
+
+    statsCSVFileName =  "statsResult_" + dt_string +".csv"
+    wordsCSVFileName =  "wordsResult_" + dt_string +".csv"
+
+
+    with open(statsCSVFileName, 'w', newline='') as csvfile:
+            statWriter = csv.DictWriter(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL, fieldnames = headerStat)
+            statWriter.writeheader()
+
+    
+    with open(wordsCSVFileName, 'w', newline='') as csvfile:
+            statWriter = csv.DictWriter(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL, fieldnames = headerWord)
+            statWriter.writeheader()
+        
 
     for url in listToImport:
         
@@ -59,8 +81,11 @@ def process(count, start, end, offset):
 
 
        
-        tokenText= tokenize(item.body)
-        Score = analyze(tokenText)
+        #tokenText= tokenize(item.body)
+        #Score = analyze( tokenText)
+        
+        Score = analyze( item.body.split())
+        
 
         #log
         print("\n--------------------------------------------------------------")    
@@ -101,15 +126,24 @@ def process(count, start, end, offset):
         f.write("\nFile : " +  url[0])
         f.write("\n8K File : " +  results.url)
         f.write("\nPositive word(s) : " + str(Score.positive))
+        f.writelines("\nPositive word(s) List: " + "%s\n" % item for item in Score.positiveWords )
+        
         f.write("\nNegative word(s) : " + str(Score.negative))
+        f.writelines("\nNegative word(s) List: " + "%s\n" % item for item in Score.negativeWords )
         f.close()
     
         #save value in csv file
         #header = ['file', '8Kfile', 'score +', 'score -', 'word +', 'word -']
-        data = [url[0], results.url, str(Score.positive), str(Score.negative),"",""]
+        data = [hash(url[0]), url[0], results.url, str(Score.positive),  str(Score.negative), "", "" ] 
+        
+      
+        with open(statsCSVFileName, 'a', newline='') as csvfile:
+            statWriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            statWriter.writerow(data)
 
-        with open('statResult.csv', 'a', newline='') as csvfile:
-            statWriter = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        data = [hash(url[0]), ",".join(Score.positiveWords), ",".join(Score.negativeWords)]
+        with open(wordsCSVFileName, 'a', newline='') as csvfile:
+            statWriter = csv.writer(csvfile, delimiter=';', quotechar='|', quoting=csv.QUOTE_MINIMAL)
             statWriter.writerow(data)
 
     return stats
@@ -127,7 +161,7 @@ for x in range(1) :
 
     offset = 100 # int(rnd.random() * 600000)
     start = 0
-    end = 5
+    end = 4
     stats = process(count, start, end, offset)
     count = 0
 

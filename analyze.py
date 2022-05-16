@@ -27,16 +27,18 @@ negative_words = [word.lower() for word in negative_words]
 #input list of words
 def analyze(wordList) :
 
-	score = Score(0,0)
+	score = Score(0,0,[],[])
 
 	for word in wordList:
 		if word.lower() in positive_words:
 			print("Positive word Found in list: ", word)
 			score.positive +=1
+			score.positiveWords.append(word)
 
 		elif word.lower() in negative_words:
 			print("Negative word Found in list: ", word)
 			score.negative +=1
+			score.negativeWords.append(word)
 
 	return score
 
